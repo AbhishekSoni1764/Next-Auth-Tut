@@ -8,7 +8,7 @@ export async function POST(request: Request) {
   await dbConnect();
 
   const session = await getServerSession(authOptions);
-  const user = session?.user as User & { _id: string };
+  const user = session?.user as User;
 
   if (!session || !session.user) {
     return Response.json(
@@ -81,10 +81,8 @@ export async function GET() {
     );
   }
 
-  const userId = user._id;
-
   try {
-    const userById = await UserModel.findById(userId);
+    const userById = await UserModel.findById(user._id);
 
     if (!userById) {
       return Response.json(
