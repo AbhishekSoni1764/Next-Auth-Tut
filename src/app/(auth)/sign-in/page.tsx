@@ -48,17 +48,15 @@ const SignIn = () => {
           title: "Login Failed!",
           description: "Incorrect Email/Username or Password!!",
         });
-      }
-
-      if (result?.url) {
-        router.replace("/dashboard");
+      } else if (result?.url) {
         toast({
-          title: "Login Successfull!",
-          description: "Redirecting to Dashboard",
+          title: "Login Successful!",
+          description: "Redirecting to Dashboard...",
         });
+        router.replace("/dashboard");
       }
     } catch (error) {
-      console.error("Error while SignIn!!", error);
+      console.error("Error while signing in:", error);
     } finally {
       setIsSubmitting(false);
     }
