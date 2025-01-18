@@ -52,7 +52,6 @@ const VerifyUser = () => {
         });
       }
     } catch (error) {
-      console.error("Error while Verifying User!!");
       const axiosError = error as AxiosError<ApiResponse>;
       const errorMessage = axiosError.response?.data.message;
 

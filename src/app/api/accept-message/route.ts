@@ -51,14 +51,12 @@ export async function POST(request: Request) {
       { status: 200 }
     );
   } catch (error) {
-    console.error(
-      "Something went wrong while updated user message acceptance!!",
-      error
-    );
     return Response.json(
       {
         success: false,
-        message: "Something went wrong while updated user message acceptance!!",
+        message:
+          error?.message ||
+          "Something went wrong while updated user message acceptance!!",
       },
       { status: 400 }
     );
@@ -103,11 +101,11 @@ export async function GET() {
       { status: 200 }
     );
   } catch (error) {
-    console.error("Something went wrong while fetching acceptance!!", error);
     return Response.json(
       {
         success: false,
-        message: "Something went wrong while fetching acceptance!!",
+        message:
+          error?.message || "Something went wrong while fetching acceptance!!",
       },
       { status: 400 }
     );

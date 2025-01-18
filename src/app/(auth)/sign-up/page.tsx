@@ -89,7 +89,6 @@ const SignUp = () => {
         });
       }
     } catch (error) {
-      console.error("Error during sign-up!!");
       const axiosError = error as AxiosError<ApiResponse>;
       const errorMessage = axiosError.response?.data.message;
 

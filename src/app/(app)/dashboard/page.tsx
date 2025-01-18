@@ -50,7 +50,6 @@ const Dashboard = () => {
         throw new Error("Invalid API response format");
       }
     } catch (error) {
-      console.error("Error while Fetching Accept Message!!");
       const axiosError = error as AxiosError<ApiResponse>;
       toast({
         title: "Failed to fetch Accept Messages!",
@@ -79,7 +78,6 @@ const Dashboard = () => {
           });
         }
       } catch (error) {
-        console.error("Error while Fetching Accept Message!!");
         const axiosError = error as AxiosError<ApiResponse>;
         toast({
           title: "Failed fetch Accept Messages!",
@@ -131,7 +129,6 @@ const Dashboard = () => {
         });
       }
     } catch (error) {
-      console.error("Error while toggling Accept Message!!");
       const axiosError = error as AxiosError<ApiResponse>;
       toast({
         title: "Failed to toggle Accept Messages!",

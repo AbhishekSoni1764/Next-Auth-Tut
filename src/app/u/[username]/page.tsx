@@ -15,11 +15,13 @@ import { ApiResponse } from "@/types/ApiResponse";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { messageData } from "@/app/data/messageData";
+import { useSession } from "next-auth/react";
+import { User } from "next-auth";
 
 const PublicPage = () => {
   const [messages, setMessages] = useState(messageData);
@@ -27,6 +29,10 @@ const PublicPage = () => {
   const [isSuggesting, setIsSuggesting] = useState(false);
   const { toast } = useToast();
   const params = useParams<{ username: string }>();
+  const router = useRouter();
+
+  const { data: session } = useSession();
+  const user = session?.user as User;
 
   const form = useForm<z.infer<typeof messageSchema>>({
     resolver: zodResolver(messageSchema),
@@ -63,7 +69,6 @@ const PublicPage = () => {
         });
       }
     } catch (error) {
-      console.error("Something went wrong while suggesting messages!!", error);
       const axiosError = error as AxiosError<ApiResponse>;
       toast({
         title: "Gemini Didn't work!",
@@ -79,26 +84,33 @@ const PublicPage = () => {
   const onSubmit = async (data: z.infer<typeof messageSchema>) => {
     setIsSubmitting(true);
     try {
-      const response = await axios.post<ApiResponse>(`/api/send-message`, {
-        username: params.username,
-        content: data.content,
-      });
-
-      if (response.data.success === true) {
-        toast({
-          title: "Message Sent!!",
-          description: response.data.message,
+      if (user.isAcceptingMessages) {
+        const response = await axios.post<ApiResponse>(`/api/send-message`, {
+          username: params.username,
+          content: data.content,
         });
+
+        if (response.data.success === true) {
+          toast({
+            title: "Message Sent!!",
+            description: response.data.message,
+          });
+        } else {
+          toast({
+            title: "Message sending unsuccessfull!!",
+            description: response.data.message,
+          });
+        }
       } else {
         toast({
-          title: "Message sending unsuccessfull!!",
-          description: response.data.message,
+          title: "User is not accepting messages right now!",
+          description: "Please enable accepting messages field!!",
         });
+        router.replace("/dashboard");
       }
 
       form.reset();
     } catch (error) {
-      console.error("Something went wrong while sending message!!", error);
       const axiosError = error as AxiosError<ApiResponse>;
       toast({
         title: "Failed to Send!",

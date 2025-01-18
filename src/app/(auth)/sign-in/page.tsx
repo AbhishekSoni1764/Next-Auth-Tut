@@ -20,6 +20,8 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { signInSchema } from "@/schemas/signInSchema";
 import { signIn } from "next-auth/react";
+import { AxiosError } from "axios";
+import { ApiResponse } from "@/types/ApiResponse";
 
 const SignIn = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -56,7 +58,11 @@ const SignIn = () => {
         router.replace("/dashboard");
       }
     } catch (error) {
-      console.error("Error while signing in:", error);
+      const axiosError = error as AxiosError<ApiResponse>;
+      toast({
+        title: "Login Failed!!",
+        description: axiosError.response?.data.message ?? "Login Failed",
+      });
     } finally {
       setIsSubmitting(false);
     }
