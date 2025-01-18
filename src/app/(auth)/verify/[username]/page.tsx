@@ -40,7 +40,7 @@ const VerifyUser = () => {
 
       if (response.data.success === true) {
         toast({
-          title: "User is Verified!!",
+          title: "User is Verified!! Please Login",
           description: response?.data.message,
         });
 
@@ -96,10 +96,10 @@ const VerifyUser = () => {
               {isVerifying ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Please wait
+                  Please wait Verifying
                 </>
               ) : (
-                "Sign Up"
+                "Verify"
               )}
             </Button>
           </form>
