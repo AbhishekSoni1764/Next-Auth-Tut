@@ -6,8 +6,6 @@ import {
   useScroll,
   useTransform,
 } from "framer-motion";
-import { SiSpacex } from "react-icons/si";
-import { FiArrowRight, FiMapPin } from "react-icons/fi";
 import { useRef } from "react";
 
 export const SmoothScrollHero = () => {
@@ -16,10 +14,7 @@ export const SmoothScrollHero = () => {
       <ReactLenis
         root
         options={{
-          // Learn more -> https://github.com/darkroomengineering/lenis?tab=readme-ov-file#instance-settings
           lerp: 0.05,
-          //   infinite: true,
-          //   syncTouch: true,
         }}
       >
         <Hero />
@@ -132,7 +127,6 @@ const ParallaxImg = ({
 
   const { scrollYProgress } = useScroll({
     target: ref,
-    // @ts-ignore
     offset: [`${start}px end`, `end ${end * -1}px`],
   });
 
